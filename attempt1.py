@@ -201,8 +201,12 @@ if __name__ == "__main__":
                 if len(M) != 0:
                     M.pop(0)
                 stepM(M, 1)
-                M_gridnew.append(M)
-                fcgsnew.append(fcg(M))
+                fcgM = fcg(M)
+                isfilter = filter(M, fcgM, M_gridnew, fcgsnew)
+                # print(inds, isfilter)
+                if isfilter:
+                    M_gridnew.append(M)
+                    fcgsnew.append(fcgM)
             stepD(D, D_dash, 1)
         elif s == 1:
             t = emergency_till(D)
@@ -245,6 +249,7 @@ if __name__ == "__main__":
         M_grid = M_gridnew[:]
         fcgs = fcgsnew[:]
         print(M_grid)
+        plot_graph(fcgs)
 
 
     if f == 1:
