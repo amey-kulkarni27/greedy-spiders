@@ -1,5 +1,5 @@
 import itertools
-
+from time import time
 import matplotlib.pyplot as plt
 
 '''
@@ -9,6 +9,14 @@ import matplotlib.pyplot as plt
     a) If there is no emergency, reduce all Ms by one and filter
     b) If there is an emergency, consider all possibilities in M after choosing (t+1) values in the D_dash array
 4) Repeat step 3) until done gives a verdict
+'''
+
+'''
+for f in all possible fcgs (number of Ds and Rs)
+If f is not a subgraph compared to all existing fcgs
+    then fit f on to the numbers
+        if f fits, eliminate all subgraphs of f from existing fcgs
+        add f
 '''
 f = -1
 
@@ -178,15 +186,19 @@ def filter(M, fcgM, M_gridnew, fcgsnew):
 if __name__ == "__main__":
     # M_grid is a list of lists
     # Each list is a separate possibility
+    t_start = time()
     M_grid = [[7, 8, 9, 12]]
     fcgs = [fcg(M_grid[0])]
 
+    # Constraint 1: upper limit = max(max(M) - steps, max(D_dash) + steps - 2)
+    # Constraint 2: No graph is a subgraph of any other graph
     # print(fcgs[0])
     # plot_graph(fcgs[0])
 
     D = [3, 3, 4, 4]
     D_dash = [9, 10, 10, 12]
     # exit(0)
+    # MD = [6, 7, 9, 13, ....]
 
     while(len(M_grid)):
         # print(M_grid)
@@ -245,11 +257,16 @@ if __name__ == "__main__":
                             fcgsnew.append(fcgM)
             D = D[t+1:]
             D_dash = D_dash[t+1:]
-            stepD(D, D_dash, 1)
+            stepD(D, D_dash, t+1)
         M_grid = M_gridnew[:]
         fcgs = fcgsnew[:]
-        print(M_grid)
+        print(len(M_grid))
+        # print(M_grid)
+        print(D, D_dash)
+        t_end = time()
+        print("Time taken: ", t_end-t_start)
         plot_graph(fcgs)
+        t_start = time()
 
 
     if f == 1:
